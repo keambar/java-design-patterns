@@ -1,6 +1,6 @@
 /**
  * The MIT License
- * Copyright (c) 2014-2016 Ilkka Seppälä
+ * Copyright (c) 2014 Ilkka Seppälä
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,59 +20,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.iluwatar.iterator;
-
-import java.util.List;
+package com.iluwatar.hexagonal.administration;
 
 /**
- * 
- * TreasureChestItemIterator
- *
+ * Console interface for lottery administration
  */
-public class TreasureChestItemIterator implements ItemIterator {
-
-  private TreasureChest chest;
-  private int idx;
-  private ItemType type;
+public interface ConsoleAdministrationSrv {
 
   /**
-   * Constructor
+   * Get all submitted tickets
    */
-  public TreasureChestItemIterator(TreasureChest chest, ItemType type) {
-    this.chest = chest;
-    this.type = type;
-    this.idx = -1;
-  }
+  void getAllSubmittedTickets();
 
-  @Override
-  public boolean hasNext() {
-    return findNextIdx() != -1;
-  }
+  /**
+   * Draw lottery numbers
+   */
+  void performLottery();
 
-  @Override
-  public Item next() {
-    idx = findNextIdx();
-    if (idx != -1) {
-      return chest.getItems().get(idx);
-    }
-    return null;
-  }
-
-  private int findNextIdx() {
-
-    List<Item> items = chest.getItems();
-    boolean found = false;
-    int tempIdx = idx;
-    while (!found) {
-      tempIdx++;
-      if (tempIdx >= items.size()) {
-        tempIdx = -1;
-        break;
-      }
-      if (type.equals(ItemType.ANY) || items.get(tempIdx).getType().equals(type)) {
-        break;
-      }
-    }
-    return tempIdx;
-  }
+  /**
+   * Begin new lottery round
+   */
+  void resetLottery();
 }
